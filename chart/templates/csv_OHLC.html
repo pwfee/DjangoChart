@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OHLC</title>
+</head>
+<body>
+<script>
+    var dates_json = JSON.parse('{{ df_dates_json|escapejs }}');
+    var hlc_json = JSON.parse('{{ df_hlc_json|escapejs }}');
+    alert(dates_json);
+    alert(hlc_json);
+
+</script>
+</body>
+</html>
