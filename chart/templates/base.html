@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>XXX-Chart</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600%7CRoboto%20Mono' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Dosis:500&text=Vue.js' rel='stylesheet' type='text/css'>
+        <script src="/static/js/echarts.min.js"></script>
+    <!-- main page styles -->
+    <link rel="stylesheet" href="/static/css/page.css">
+</head>
+
+<body class="docs">
+    <div id="mobile-bar">
+        <a class="menu-button"></a>
+        <a class="logo" href="#"></a>
+    </div>
+    <div id="header">
+        <a id="logo" href="#">
+            <img src="https://cn.vuejs.org/images/logo.png">
+            <span>XXX-Chart</span>
+        </a>
+    </div>
+
+    <div id="main" class="fix-sidebar">
+        <div class="sidebar">
+            <div class="list">
+                <ul class="menu-root">
+                    <li>
+                        <h3>File Tree</h3>
+                    </li>
+                    {% for csv_file in csv_files %}
+                            <li><a href="/csv/{{ csv_file }}">{{ csv_file }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="content guide with-sidebar index-guide">
+        	<div id="chart-container">
+                <!-- custom body begin -->
+                {% block body %}{% endblock %}
+                <!-- custom body end -->
+            </div>
+        </div>
+
+    </div>
+    <script src="/static/js/smooth-scroll.min.js"></script>
+    <!-- main custom script for sidebars, version selects etc. -->
+    <script src="/static/js/common.js"></script>
+</body>
+
+</html>

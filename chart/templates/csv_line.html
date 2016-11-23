@@ -1,16 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Line</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block body %}
+{#<h1>Chart-Area</h1>#}
+<div id="chart" style="width: 1000px;height:600px;"></div>
+
 <script>
-    var dates_json = JSON.parse('{{ df_dates_json|escapejs }}');
-    var line_json = JSON.parse('{{ df_line_json|escapejs }}');
-    alert(dates_json);
-    alert(line_json);
+    var myChart = echarts.init(document.getElementById('chart'));
+
+    var df_json = JSON.parse('{{ df_json|escapejs }}');
+    var data0 = splitData(df_json);
+
+    function splitData(rawData) {
+        var categoryData = [];
+        var values = [];
+        for (var i = 0; i < rawData.length; i++) {
+            categoryData.push(rawData[i].splice(0, 1)[0]);
+            values.push(rawData[i][0]);
+        }
+        return {
+            categoryData: categoryData,
+            values: values
+        };
+    }
+
+
+    myChart.on('dblclick', function (params) {
+         myChart.setOption({
+             dataZoom: [
+                    {
+                        type: 'inside',
+                        startValue: 0,
+                        endValue: 250,
+                        throttle: 1
+                    },
+                 ]
+        })
+    });
+
+    myChart.setOption({
+        title: {
+            text: 'OHLC-Chart',
+            left: 0
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line'
+            }
+        },
+        legend: {
+            data: ['Line']
+        },
+        grid: {
+            left: '10%',
+            right: '10%',
+            bottom: '15%'
+        },
+        xAxis: {
+            type: 'category',
+            data: data0.categoryData,
+            scale: true,
+            boundaryGap : false,
+            axisLine: {onZero: false},
+            splitLine: {show: false},
+            splitNumber: 20,
+            min: 'dataMin',
+            max: 'dataMax'
+        },
+        yAxis: {
+            scale: true,
+            splitArea: {
+                show: true
+            }
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                startValue: 0,
+                endValue: 250,
+            },
+            {
+                show: true,
+                type: 'slider',
+                y: '90%',
+            }
+        ],
+        series: [
+            {
+                name: 'Line',
+                type: 'line',
+                data: data0.values,
+            }
+        ]
+    });
 
 </script>
-</body>
-</html>
+
+{% endblock %}
