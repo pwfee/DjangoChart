@@ -24,13 +24,18 @@ def show_csv_item(request):
 
     if 'highp' and 'lowp' in df.columns.tolist():
         df_dates_json = df["dates"].to_json(orient="values")
-        df_hlc_json = df[["closep","highp","lowp"]].to_json(orient="values")
-        return render(request, 'csv_OHLC.html', {'df_dates_json': df_dates_json, 'df_hlc_json': df_hlc_json})
+        df_hlc_json = df[["openp","closep","highp","lowp"]].to_json(orient="values")
+        df_json = df.to_json(orient="values")
+        # return render(request, 'csv_OHLC.html', {'df_dates_json': df_dates_json, 'df_hlc_json': df_hlc_json})
+        return render(request, 'csv_OHLC.html', {'df_json': df_json})
 
     elif 'dates' and 'closep' in df.columns.tolist():
-        df_dates_json = df["dates"].to_json(orient="values")
-        df_line_json = df["closep"].to_json(orient="values")
-        return render(request, 'csv_line.html', {'df_dates_json': df_dates_json, 'df_line_json': df_line_json})
+        # df_dates_json = df["dates"].to_json(orient="values")
+        # df_line_json = df["closep"].to_json(orient="values")
+        # return render(request, 'csv_line.html', {'df_dates_json': df_dates_json, 'df_line_json': df_line_json})
+        df_json = df.to_json(orient="values")
+        # df_line_json = df["closep"].to_json(orient="values")
+        return render(request, 'csv_line.html', {'df_json': df_json})
 
     else:
         return HttpResponse("Wrong Data")

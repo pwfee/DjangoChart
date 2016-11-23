@@ -2,15 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>OHLC</title>
+    <title>Line</title>
+    <script src="/static/js/echarts.min.js"></script>
 </head>
+
 <body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+</body>
+
+
 <script>
-    var dates_json = JSON.parse('{{ df_dates_json|escapejs }}');
-    var hlc_json = JSON.parse('{{ df_hlc_json|escapejs }}');
-    alert(dates_json);
-    alert(hlc_json);
+    var myChart = echarts.init(document.getElementById('main'));
+
+    function fetchData(cb) {
+
+        var df_json = JSON.parse('{{ df_json|escapejs }}');
+        var data0 = splitData(df_json);
+
+        function splitData(rawData) {
+            var categoryData = [];
+            var values = [];
+            for (var i = 0; i < rawData.length; i++) {
+                categoryData.push(rawData[i].splice(0, 1)[0]);
+                values.push(rawData[i])
+            }
+            return {
+                categoryData: categoryData,
+                values: values
+            };
+        }
+
+        cb({
+            data: data0
+        });
+    }
+
+    myChart.showLoading();
+
+    fetchData(function (data1) {
+        myChart.hideLoading();
+        myChart.setOption({
+            title: {
+                text: 'OHLC-Chart',
+                left: 0
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'line'
+                }
+            },
+            legend: {
+                data: ['OHLC', 'MA5', 'MA10', 'MA20', 'MA30']
+            },
+            grid: {
+                left: '10%',
+                right: '10%',
+                bottom: '15%'
+            },
+            xAxis: {
+                type: 'category',
+                data: data1.data.categoryData,
+                scale: true,
+                boundaryGap : false,
+                axisLine: {onZero: false},
+                splitLine: {show: false},
+                splitNumber: 20,
+                min: 'dataMin',
+                max: 'dataMax'
+            },
+            yAxis: {
+                scale: true,
+                splitArea: {
+                    show: true
+                }
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 50,
+                    end: 100
+                },
+                {
+                    show: true,
+                    type: 'slider',
+                    y: '90%',
+                    start: 50,
+                    end: 100
+                }
+            ],
+            series: [
+                {
+                    name: 'OHLC',
+                    type: 'candlestick',
+                    data: data1.data.values,
+                    markLine: {
+                        symbol: ['none', 'none'],
+                        data: [
+                            [
+                                {
+                                    name: 'from lowest to highest',
+                                    type: 'min',
+                                    valueDim: 'lowest',
+                                    symbol: 'circle',
+                                    symbolSize: 10,
+                                    label: {
+                                        normal: {show: false},
+                                        emphasis: {show: false}
+                                    }
+                                },
+                                {
+                                    type: 'max',
+                                    valueDim: 'highest',
+                                    symbol: 'circle',
+                                    symbolSize: 10,
+                                    label: {
+                                        normal: {show: false},
+                                        emphasis: {show: false}
+                                    }
+                                }
+                            ],
+                            {
+                                name: 'min line on close',
+                                type: 'min',
+                                valueDim: 'close'
+                            },
+                            {
+                                name: 'max line on close',
+                                type: 'max',
+                                valueDim: 'close'
+                            }
+                        ]
+                    }
+                }
+            ]
+        });
+    });
+
 
 </script>
-</body>
+
 </html>
