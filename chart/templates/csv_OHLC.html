@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-
+{% block title %}<title>{{ file_name_no_postfix }}</title>{% endblock %}
 {% block body %}
-{#<h1>Chart-Area</h1>#}
 <div id="chart" style="width: 1000px;height:600px;"></div>
 
 <script>
@@ -42,17 +41,13 @@ console.log(data0.values);
 
     myChart.setOption({
         title: {
-            text: 'OHLC-Chart',
-            left: 0
+            text: '{{ file_name_no_postfix }}',
         },
         tooltip: {
             trigger: 'axis',
             axisPointer: {
                 type: 'line'
             }
-        },
-        legend: {
-            data: ['OHLC']
         },
         grid: {
             left: '10%',
@@ -92,45 +87,7 @@ console.log(data0.values);
             {
                 name: 'OHLC',
                 type: 'candlestick',
-                data: data0.values,
-                markLine: {
-                    symbol: ['none', 'none'],
-                    data: [
-                        [
-                            {
-                                name: 'from lowest to highest',
-                                type: 'min',
-                                valueDim: 'lowest',
-                                symbol: 'circle',
-                                symbolSize: 10,
-                                label: {
-                                    normal: {show: false},
-                                    emphasis: {show: false}
-                                }
-                            },
-                            {
-                                type: 'max',
-                                valueDim: 'highest',
-                                symbol: 'circle',
-                                symbolSize: 10,
-                                label: {
-                                    normal: {show: false},
-                                    emphasis: {show: false}
-                                }
-                            }
-                        ],
-                        {
-                            name: 'min line on close',
-                            type: 'min',
-                            valueDim: 'close'
-                        },
-                        {
-                            name: 'max line on close',
-                            type: 'max',
-                            valueDim: 'close'
-                        }
-                    ]
-                }
+                data: data0.values
             }
         ]
     });

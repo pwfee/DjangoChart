@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-    <title>XXX-Chart</title>
+    <!-- custom title begin -->
+    {% block title %}{% endblock %}
+    <!-- custom title end -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600%7CRoboto%20Mono' rel='stylesheet' type='text/css'>
@@ -19,7 +21,6 @@
     </div>
     <div id="header">
         <a id="logo" href="#">
-            <img src="https://cn.vuejs.org/images/logo.png">
             <span>XXX-Chart</span>
         </a>
     </div>
@@ -31,8 +32,8 @@
                     <li>
                         <h3>File Tree</h3>
                     </li>
-                    {% for csv_file in csv_files %}
-                            <li><a href="/csv/{{ csv_file }}">{{ csv_file }}</a></li>
+                    {% for file in file_list %}
+                            <li><a href="/csv/{{ file }}.csv">{{ file }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
