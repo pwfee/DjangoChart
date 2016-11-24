@@ -1,56 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- custom title begin -->
     {% block title %}{% endblock %}
     <!-- custom title end -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600%7CRoboto%20Mono' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Dosis:500&text=Vue.js' rel='stylesheet' type='text/css'>
-        <script src="/static/js/echarts.min.js"></script>
-    <!-- main page styles -->
-    <link rel="stylesheet" href="/static/css/page.css">
+    <!-- Material Design Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- App CSS (includes Bootstrap & Bootstrap Layout) -->
+    <link type="text/css" href="/static/css/app.min.css" rel="stylesheet">
+    <script src="/static/js/echarts.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
 </head>
 
-<body class="docs">
-    <div id="mobile-bar">
-        <a class="menu-button"></a>
-        <a class="logo" href="#"></a>
-    </div>
-    <div id="header">
-        <a id="logo" href="#">
-            <span>XXX-Chart</span>
-        </a>
-    </div>
-
-    <div id="main" class="fix-sidebar">
-        <div class="sidebar">
-            <div class="list">
-                <ul class="menu-root">
-                    <li>
-                        <h3>File Tree</h3>
-                    </li>
-                    {% for file in file_list %}
-                            <li><a href="/csv/{{ file }}.csv">{{ file }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-        <div class="content guide with-sidebar index-guide">
-        	<div id="chart-container">
+<body class="layout-container ls-top layout-sidebar-l3-md-up">
+    <div class="layout-content" data-scrollable>
+        <!-- Sidebar toggle -->
+        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="sidebar" data-target="#sidebar"><span class="material-icons">menu</span></button>
+        <div class="container-fluid">
                 <!-- custom body begin -->
                 {% block body %}{% endblock %}
                 <!-- custom body end -->
-            </div>
         </div>
-
     </div>
-    <script src="/static/js/smooth-scroll.min.js"></script>
-    <!-- main custom script for sidebars, version selects etc. -->
-    <script src="/static/js/common.js"></script>
+    <!-- Sidebar -->
+    <div class="sidebar sidebar-left sidebar-visible-md-up sidebar-size-3 sidebar-dark bg-primary" id="sidebar" data-scrollable>
+        <!-- Brand -->
+        <a href="#" class="sidebar-brand sidebar-brand-bg sidebar-brand-border">XXX-Chart</a>
+        <ul class="sidebar-menu sm-active-button-bg">
+            <li class="sidebar-menu-item open">
+                <a href="index.html#" class="sidebar-menu-button" data-toggle="sidebar-collapse">File Tree</a>
+                <ul class="sidebar-submenu sm-condensed">
+                    {% for file in file_list %}
+                        {% if file == file_name_no_postfix %}
+                        <li class="sidebar-menu-item active">
+                            <a href="/csv/{{ file }}.csv" class="sidebar-menu-button">{{ file }}</a>
+                        </li>
+
+                        {% else %}
+                        <li class="sidebar-menu-item">
+                            <a href="/csv/{{ file }}.csv" class="sidebar-menu-button">{{ file }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- // END Sidebar -->
+    <!-- App JS (includes vendor assets) -->
+    <script src="/static/js/app.browserify.min.js"></script>
 </body>
 
 </html>

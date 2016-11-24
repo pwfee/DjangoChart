@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}<title>{{ file_name_no_postfix }}</title>{% endblock %}
 {% block body %}
-<div id="chart" style="width: 900px;height:600px;"></div>
+<div class="card card-block" id="content">
+    <div id="chart" style="width: 900px;height:600px;"></div>
+</div>
 <script>
-    var myChart = echarts.init(document.getElementById('chart'));
+    worldMapContainer = document.getElementById('chart');
+
+
+    //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+    var resizeWorldMapContainer = function () {
+        worldMapContainer.style.width = $("#content").innerWidth()+'px';
+{#        worldMapContainer.style.height = $("#content").innerHeight()+'px';#}
+    };
+
+    resizeWorldMapContainer();
+    var myChart = echarts.init(worldMapContainer);
 
     var df_json = JSON.parse('{{ df_json|escapejs }}');
     var data0 = splitData(df_json);
@@ -28,11 +40,11 @@
              dataZoom: [
                     {
                         type: 'inside',
-                        startValue: data0.data_length - 250,
-                        endValue: data0.data_length,
+                        startValue:params.dataIndex - 125,
+                        endValue:params.dataIndex + 125,
                         throttle: 1
                     },
-                 ]
+                 ],
         })
     });
 
@@ -89,6 +101,11 @@
             }
         ]
     });
+window.onresize = function () {
+    //重置容器高宽
+    resizeWorldMapContainer();
+    myChart.resize();
+};
 
 </script>
 
