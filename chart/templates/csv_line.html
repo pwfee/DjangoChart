@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}<title>{{ file_name_no_postfix }}</title>{% endblock %}
 {% block body %}
-<div id="chart" style="width: 1000px;height:600px;"></div>
+<div id="chart" style="width: 900px;height:600px;"></div>
 <script>
     var myChart = echarts.init(document.getElementById('chart'));
 
@@ -17,7 +17,8 @@
         }
         return {
             categoryData: categoryData,
-            values: values
+            values: values,
+            data_length: rawData.length
         };
     }
 
@@ -27,8 +28,8 @@
              dataZoom: [
                     {
                         type: 'inside',
-                        startValue: 0,
-                        endValue: 250,
+                        startValue: data0.data_length - 250,
+                        endValue: data0.data_length,
                         throttle: 1
                     },
                  ]
@@ -70,8 +71,8 @@
         dataZoom: [
             {
                 type: 'inside',
-                startValue: 0,
-                endValue: 250,
+                startValue: data0.data_length - 250,
+                endValue: data0.data_length
             },
             {
                 show: true,

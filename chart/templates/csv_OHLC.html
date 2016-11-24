@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}<title>{{ file_name_no_postfix }}</title>{% endblock %}
 {% block body %}
-<div id="chart" style="width: 1000px;height:600px;"></div>
+<div id="chart" style="width: 900px;height:600px;"></div>
 
 <script>
     // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
@@ -20,7 +20,8 @@
         }
         return {
             categoryData: categoryData,
-            values: values
+            values: values,
+            data_length: rawData.length
         };
     }
 
@@ -31,8 +32,8 @@ console.log(data0.values);
              dataZoom: [
                     {
                         type: 'inside',
-                        startValue: 0,
-                        endValue: 250,
+                        startValue: data0.data_length - 250,
+                        endValue: data0.data_length,
                         throttle: 1
                     },
                  ]
@@ -74,8 +75,8 @@ console.log(data0.values);
         dataZoom: [
             {
                 type: 'inside',
-                startValue: 0,
-                endValue: 250,
+                startValue: data0.data_length - 250,
+                endValue: data0.data_length
             },
             {
                 show: true,

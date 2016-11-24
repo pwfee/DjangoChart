@@ -212,7 +212,7 @@ a.button.white {
   position: relative;
   z-index: 1;
   padding: 0 60px 30px;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 #ad {
   width: 125px;
@@ -399,10 +399,6 @@ body.docs #nav {
 }
 
 @media screen and (max-width: 900px) {
-  #demo,
-  .demo {
-    margin-left: 0;
-  }
 }
 .benchmark-table {
   margin: 0 auto;
@@ -442,14 +438,14 @@ body.docs #nav {
 }
 .sidebar {
   position: absolute;
-  z-index: 10;
-  top: 61px;
+  z-index: 20;
+  top: 15px;
   left: 0;
   bottom: 0;
-  padding: 40px 0 30px 60px;
-  width: 180px;
+  padding: 40px 0px 30px 60px;
+  width: 150px;
   margin-right: 20px;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
@@ -541,8 +537,8 @@ body.docs #nav {
 .content {
   position: relative;
   padding: 2.2em 0;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: 0 220px;
 }
 .content.api > a:first-of-type > h2 {
   margin-top: 0;
@@ -693,7 +689,7 @@ body.docs #nav {
 }
 @media screen and (max-width: 1300px) {
   .content.with-sidebar {
-    margin-left: 290px;
+    margin-left: 180px;
   }
 }
 @media screen and (max-width: 900px) {
@@ -724,7 +720,7 @@ body.docs #nav {
     padding: 1.2em 1em;
   }
   .content.with-sidebar {
-    margin: auto;
+    margin-left: 0;
   }
   .content h2:before,
   .content h3:before {
@@ -737,17 +733,4 @@ body.docs #nav {
   .footer {
     margin-left: 0;
 
-}
-@media screen and (max-width: 560px) {
-  #downloads {
-    text-align: center;
-    margin-bottom: 25px;
-  }
-  #downloads .info {
-    margin-top: 5px;
-    margin-left: 0;
-  }
-  iframe {
-    margin: 0 !important;
-  }
 }

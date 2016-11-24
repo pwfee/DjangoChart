@@ -33,6 +33,7 @@ def index(request):
 def show_csv_item(request):
     file_name = get_file_name(request)
     file_name_no_postfix = get_file_name_no_postfix(file_name)
+    print file_name
     if file_name:
         try:
             df = pd.read_csv(CSV_PATH + file_name)
