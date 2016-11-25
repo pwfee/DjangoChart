@@ -1,14 +1,2 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Chart-Index</title>
-</head>
-<body>
-        <ul style="list-style-type:square">
-        {% for csv_file in csv_files %}
-                <li><a href="csv/{{ csv_file }}">{{ csv_file }}</a></li>
-        {% endfor %}
-        </ul>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}<title>Index</title>{% endblock %}

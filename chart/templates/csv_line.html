@@ -5,21 +5,27 @@
     <div id="chart" style="width: 900px;height:600px;"></div>
 </div>
 <script>
-    worldMapContainer = document.getElementById('chart');
-
+    ChartContainer = document.getElementById('chart');
 
     //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
-    var resizeWorldMapContainer = function () {
-        worldMapContainer.style.width = $("#content").innerWidth()+'px';
-{#        worldMapContainer.style.height = $("#content").innerHeight()+'px';#}
+    var resizeChartContainer = function () {
+        ChartContainer.style.width = $("#content").innerWidth()+'px';
+        ChartContainer.style.height = window.innerHeight - 100 +'px';
     };
 
-    resizeWorldMapContainer();
-    var myChart = echarts.init(worldMapContainer);
+    //首次获得的窗口高宽度以供chart适应
+    resizeChartContainer();
 
+    //初始化Chart
+    var myChart = echarts.init(ChartContainer);
+
+    //获取Django传来的df_json
     var df_json = JSON.parse('{{ df_json|escapejs }}');
-    var data0 = splitData(df_json);
 
+    //通过splitData函数分离数据中的year和value
+    var data = splitData(df_json);
+
+    //categoryData为year,供X轴使用;values为汇率数据;data_length为数据总长度,供计算停留的数据位置
     function splitData(rawData) {
         var categoryData = [];
         var values = [];
@@ -34,7 +40,7 @@
         };
     }
 
-
+    //触发双击事件,双击任何数据点即恢复至(数据点-125,数据点+125)的范围
     myChart.on('dblclick', function (params) {
          myChart.setOption({
              dataZoom: [
@@ -48,9 +54,13 @@
         })
     });
 
+    //Chart全局初始配置;具体文档参照 http://echarts.baidu.com/option.html
     myChart.setOption({
         title: {
             text: '{{ file_name_no_postfix }}',
+            x:'center',
+            y:'top',
+            textAlign:'center'
         },
         tooltip: {
             trigger: 'axis',
@@ -65,7 +75,7 @@
         },
         xAxis: {
             type: 'category',
-            data: data0.categoryData,
+            data: data.categoryData,
             scale: true,
             boundaryGap : false,
             axisLine: {onZero: false},
@@ -83,8 +93,8 @@
         dataZoom: [
             {
                 type: 'inside',
-                startValue: data0.data_length - 250,
-                endValue: data0.data_length
+                startValue: data.data_length - 250,
+                endValue: data.data_length
             },
             {
                 show: true,
@@ -97,15 +107,16 @@
                 name: 'Line',
                 type: 'line',
                 color:'black',
-                data: data0.values,
+                data: data.values,
             }
         ]
     });
-window.onresize = function () {
-    //重置容器高宽
-    resizeWorldMapContainer();
-    myChart.resize();
-};
+
+    //通过window.onresize监听窗口大小是否改变,以重新获取改变后的高宽度,传给Chart重绘
+    window.onresize = function () {
+        resizeChartContainer();
+        myChart.resize();
+    };
 
 </script>
 

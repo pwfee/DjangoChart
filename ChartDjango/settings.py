@@ -103,4 +103,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static/')]
 
+# the path storage CSV files
 CSV_PATH =  os.getcwd() + '/static/csv/'
