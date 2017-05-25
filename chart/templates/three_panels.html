@@ -1,0 +1,362 @@
+{% extends 'base.html' %}
+{% block title %}<title>{{ file_name_no_postfix }}</title>{% endblock %}
+{% block body %}
+<div class="card card-block" id="content">
+    <div id="main"></div>
+    <div id="main2"></div>
+    <div id="main3"></div>
+</div>
+
+
+
+<script>
+
+    //数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
+    ChartContainer1 = document.getElementById('main');
+    ChartContainer2 = document.getElementById('main2');
+    ChartContainer3 = document.getElementById('main3');
+
+    //用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+    //H(p0:p1:p2) = 2:1:1
+    var resizeChartContainer = function () {
+        ChartContainer1.style.width = $("#content").innerWidth()+'px';
+        ChartContainer2.style.width = ChartContainer1.style.width;
+        ChartContainer3.style.width = ChartContainer1.style.width;
+
+        ChartContainer1.style.height = window.innerHeight / 2 - 80 +'px';
+        ChartContainer2.style.height = (window.innerHeight / 2 - 80) / 2 +'px';
+        ChartContainer3.style.height = (window.innerHeight / 2 - 80) / 2 + 50 +'px';
+
+    };
+
+    resizeChartContainer();
+
+
+
+    //获取Django传来的dates_json(日期),供X轴使用;
+    var dates = JSON.parse('{{ dates_json|escapejs }}');
+
+    //获取Django传来的ohcl
+    var ohcl = JSON.parse('{{ ohlc_json|escapejs }}');
+
+    // p0
+    var p0 = JSON.parse('{{ p0_json|escapejs }}');
+
+    var p0_keys = Object.keys(p0);
+
+    var p0_seriesList = [];
+
+    var p0_yAxisList =[];
+
+    var p0_y1 = JSON.parse('{{ p0_y1_json|escapejs }}');
+
+    var p0_y1_keys = Object.keys(p0_y1);
+
+    // p1
+    var p1 = JSON.parse('{{ p1_json|escapejs }}');
+
+    var p1_keys = Object.keys(p1);
+
+    var p1_seriesList = [];
+
+    var p1_yAxisList =[];
+
+    var p1_y1 = JSON.parse('{{ p1_y1_json|escapejs }}');
+
+    var p1_y1_keys = Object.keys(p1_y1);
+
+    // p2
+    var p2 = JSON.parse('{{ p2_json|escapejs }}');
+
+    var p2_keys = Object.keys(p2);
+
+    var p2_seriesList = [];
+
+    var p2_yAxisList =[];
+
+    var p2_y1 = JSON.parse('{{ p2_y1_json|escapejs }}');
+
+    var p2_y1_keys = Object.keys(p2_y1);
+
+    //data_length为数据总长度,供计算停留的数据位置
+    var date_length = dates.length;
+
+    option = {
+        title: {
+            text: '{{ file_name_no_postfix }}',
+            x:'center',
+            y:'top',
+            textAlign:'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line'
+            }
+        },
+        grid: {
+            top: '10%',
+            left: '10%',
+            right: '10%',
+            bottom: '5%'
+        },
+        xAxis: {
+            type: 'category',
+            data: dates,
+            scale: true,
+            boundaryGap : false,
+            axisLine: {onZero: false},
+            // 隐藏x轴
+            axisLabel:{show:false},
+            splitLine: {show: true},
+            splitNumber: 40,
+            min: 'dataMin',
+            max: 'dataMax'
+        },
+        yAxis: {
+
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 75,
+                end: 100
+
+            },
+            {
+                show: false,
+                type: 'slider',
+            }
+        ],
+    }
+
+    // 初始化Chart
+    var myChart = echarts.init(ChartContainer1);
+
+    // 读入蜡烛图
+    if(ohcl) {
+        p0_seriesList.push({
+            name: 'OHLC',
+            type: 'candlestick',
+            data: ohcl
+        });
+    }
+
+    // 默认左边Y轴
+    p0_yAxisList.push({
+        scale: true,
+        splitArea: {
+            show: true
+        }
+    });
+
+    // 遍历p0_others
+    for(var i = 0; i < p0_keys.length; i ++) {
+        p0_seriesList.push({
+            name:p0_keys[i],
+            type:'line',
+            data: JSON.parse(p0[p0_keys[i]]),
+            smooth:true
+        });
+    }
+
+    for(var i = 0; i < p0_y1_keys.length; i ++) {
+        // 若双Y轴，则添加入List
+        p0_yAxisList.push({
+            scale: true,
+            splitArea: {
+                show: true
+            }
+        });
+        p0_seriesList.push({
+            name: p0_y1_keys[i],
+            type: 'line',
+            yAxisIndex: i + 1,
+            data: JSON.parse(p0_y1[p0_y1_keys[i]]),
+        });
+    }
+
+    myChart.setOption(option);
+    // 动态更新series
+    myChart.setOption({series: p0_seriesList, yAxis: p0_yAxisList});
+
+    option2 = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line'
+            }
+        },
+        grid: {
+            top: '5%',
+            left: '10%',
+            right: '10%',
+            bottom: '10%'
+        },
+        xAxis: {
+            type: 'category',
+            data: dates,
+            scale: true,
+            boundaryGap : false,
+            axisLine: {onZero: false},
+            splitLine: {show: true},
+            // 隐藏x轴
+            axisLabel:{show:false},
+            splitNumber: 40,
+            min: 'dataMin',
+            max: 'dataMax'
+        },
+        yAxis: {
+
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 75,
+                end: 100
+            },
+            {
+                show: false,
+                type: 'slider',
+            }
+        ],
+    }
+
+    // 默认左边Y轴
+    p1_yAxisList.push({
+        scale: true,
+        splitArea: {
+            show: true
+        }
+    });
+
+    // 遍历p1
+    for(var i = 0; i < p1_keys.length; i ++) {
+        p1_seriesList.push({
+            name:p1_keys[i],
+            type:'line',
+            data: JSON.parse(p1[p1_keys[i]]),
+            smooth:true
+        });
+    }
+
+    for(var i = 0; i < p1_y1_keys.length; i ++) {
+        // 若双Y轴，则添加入List
+        p1_yAxisList.push({
+            scale: true,
+            splitArea: {
+                show: true
+            }
+        });
+        p1_seriesList.push({
+            name: p1_y1_keys[i],
+            type: 'line',
+            yAxisIndex: i + 1,
+            data: JSON.parse(p1_y1[p1_y1_keys[i]]),
+        });
+    }
+    var myChart2 = echarts.init(ChartContainer2);
+    myChart2.setOption(option2);
+    // 动态更新series
+    myChart2.setOption({series: p1_seriesList, yAxis: p1_yAxisList});
+
+
+    option3 = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line'
+            }
+        },
+        grid: {
+            top: '5%',
+            left: '10%',
+            right: '10%',
+            bottom: '35%'
+        },
+        xAxis: {
+            type: 'category',
+            data: dates,
+            scale: true,
+            boundaryGap : false,
+            axisLine: {onZero: false},
+            splitLine: {show: true},
+            splitNumber: 40,
+            min: 'dataMin',
+            max: 'dataMax'
+        },
+        yAxis: {
+
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 75,
+                end: 100
+
+            },
+            {
+                show: true,
+                type: 'slider',
+                y: '80%',
+                height: 28
+            }
+        ],
+    }
+
+    // 默认左边Y轴
+    p1_yAxisList.push({
+        scale: true,
+        splitArea: {
+            show: true
+        }
+    });
+
+    // 遍历p2
+    for(var i = 0; i < p2_keys.length; i ++) {
+        p2_seriesList.push({
+            name:p2_keys[i],
+            type:'line',
+            data: JSON.parse(p2[p2_keys[i]]),
+            smooth:true
+        });
+    }
+
+    for(var i = 0; i < p2_y1_keys.length; i ++) {
+        // 若双Y轴，则添加入List
+        p2_yAxisList.push({
+            scale: true,
+            splitArea: {
+                show: true
+            }
+        });
+        p2_seriesList.push({
+            name: p2_y1_keys[i],
+            type: 'line',
+            yAxisIndex: i + 1,
+            data: JSON.parse(p2_y1[p2_y1_keys[i]]),
+        });
+    }
+    var myChart3 = echarts.init(ChartContainer3);
+    myChart3.setOption(option3);
+    // 动态更新series
+    myChart3.setOption({series: p2_seriesList, yAxis: p2_yAxisList});
+
+
+    //三幅图关联
+    myChart.group = 'group1';
+    myChart2.group = 'group1';
+    myChart3.group = 'group1';
+    echarts.connect('group1');
+
+    window.onresize = function () {
+        resizeChartContainer();
+        myChart.resize();
+        myChart2.resize();
+        myChart3.resize();
+    };
+
+</script>
+
+
+{% endblock %}
