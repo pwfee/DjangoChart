@@ -1,53 +1,36 @@
 # coding:utf-8
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import pandas as pd
 from ChartDjango.settings import CSV_PATH
+from .utils.file_tree import *
 import os, re, json
 
-# 获取csv文件夹内去除后缀的csv文件名
-def get_file_list():
-    f_list = os.listdir(CSV_PATH)
-    f_list_no_postfix = []
-    for f_item in f_list:
-        if os.path.splitext(f_item)[1].lower() == '.csv':
-            f_list_no_postfix.append(os.path.splitext(f_item)[0])
-
-    return f_list_no_postfix
-
-
-# 根据URL判断所访问的csv文件名
-def get_file_name(request):
-    request_url = request.path
-    rex = re.compile(r'[\w]*.[\w]*$')
-    return rex.findall(request_url)[0]
-
-    # return request_url
-
-
-# 将get_file_name得到文件名除去后缀
-def get_file_name_no_postfix(file_name):
-    rex = re.compile(r'[\w]*')
-    return rex.findall(file_name)[0]
-
-
 # 首页
+def file_json(request):
+    return JsonResponse(read_dirs(CSV_PATH))
+
+
 def index(request):
-    return render(request, 'index.html', {'file_list': get_file_list()})
+    return render(request, 'index.html')
 
 
 # CSV展示页
 def show_csv_item(request):
-    file_name = get_file_name(request)
-    file_name_no_postfix = get_file_name_no_postfix(file_name)
+    if request.GET.get('path'):
+        csv_abs_path = request.GET.get('path')
+        file_name = os.path.basename(csv_abs_path)
+        file_name_no_postfix = os.path.splitext(os.path.basename(csv_abs_path))[0]
+    else:
+        return HttpResponse("Please specify the file path!")
 
     if file_name:
         try:
-            df = pd.read_csv(CSV_PATH + file_name)
+            df = pd.read_csv(csv_abs_path)
         except IOError:
-            return HttpResponse("The File does not exist!")
+            return HttpResponse("The file does not exist!")
     else:
-        return HttpResponse("Please select a File!")
+        return HttpResponse("Please select a file!")
 
     try:
         dates =  df['dates']
@@ -145,8 +128,8 @@ def show_csv_item(request):
                                                    'p1_y1_json': json.dumps(p1_y1_json),
                                                    'p2_json': json.dumps(p2_json),
                                                    'p2_y1_json': json.dumps(p2_y1_json),
-                                                   'file_name_no_postfix': file_name_no_postfix,
-                                                   'file_list': get_file_list()})
+                                                   'file_name_no_postfix': file_name_no_postfix
+                                                    })
 
 
     # 有p1, 2panels
@@ -185,8 +168,8 @@ def show_csv_item(request):
                                                      'p0_y1_json': json.dumps(p0_y1_json),
                                                      'p1_json': json.dumps(p1_json),
                                                      'p1_y1_json': json.dumps(p1_y1_json),
-                                                     'file_name_no_postfix': file_name_no_postfix,
-                                                     'file_list': get_file_list()})
+                                                     'file_name_no_postfix': file_name_no_postfix
+                                                   })
 
     # 仅有p0,单panel图
     elif p0_key:
@@ -217,6 +200,6 @@ def show_csv_item(request):
         return render(request, 'single_panel.html', {'dates_json': dates_json, 'ohlc_json': ohlc_json,
                                                      'p0_json': json.dumps(p0_json),
                                                      'p0_y1_json': json.dumps(p0_y1_json),
-                                                     'file_name_no_postfix': file_name_no_postfix,
-                                                     'file_list': get_file_list()})
+                                                     'file_name_no_postfix': file_name_no_postfix
+                                                     })
 
