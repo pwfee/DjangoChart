@@ -6,8 +6,6 @@
     <div id="main2"></div>
 </div>
 
-
-
 <script>
 
     //数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
@@ -25,13 +23,13 @@
 
     };
 
+    // 初始化容器大小
     resizeChartContainer();
-
 
     //获取Django传来的dates_json(日期),供X轴使用;
     var dates = JSON.parse('{{ dates_json|escapejs }}');
 
-    //获取Django传来的values_json(汇率数据);
+    //获取Django传来的values_json;
     var ohcl = JSON.parse('{{ ohlc_json|escapejs }}');
 
     var p0 = JSON.parse('{{ p0_json|escapejs }}');
@@ -58,6 +56,10 @@
 
     var p1_y1_keys = Object.keys(p1_y1);
 
+    var p0_legendList = [];
+
+    var p1_legendList = [];
+
     //data_length为数据总长度,供计算停留的数据位置
     var date_length = dates.length;
 
@@ -73,6 +75,14 @@
             axisPointer: {
                 type: 'line'
             }
+        },
+        legend: {
+            data:p0_legendList,
+            orient:'horizontal',
+            borderColor:'#000000',
+            borderWidth:1,
+            top: '3%',
+            right: '10%',
         },
         grid: {
             top: '10%',
@@ -120,6 +130,7 @@
             type: 'candlestick',
             data: ohcl
         });
+        p0_legendList.push('OHLC');
     }
 
     // 默认左边Y轴
@@ -132,14 +143,35 @@
 
     // 遍历p0_others
     for(var i = 0; i < p0_keys.length; i ++) {
-        p0_seriesList.push({
-            name:p0_keys[i],
-            type:'line',
-            data: JSON.parse(p0[p0_keys[i]]),
-            smooth:true
-        });
+        if(i == 0) {
+            p0_seriesList.push({
+                name:p0_keys[i],
+                type:'line',
+                itemStyle: {
+                    normal: {
+                        color: '#000000',
+                        lineStyle: {
+                            color: '#000000'
+                        }
+                    }
+                },
+                data: JSON.parse(p0[p0_keys[i]]),
+                smooth:true
+            });
+            p0_legendList.push(p0_keys[i]);
+        }
+        else {
+            p0_seriesList.push({
+                name:p0_keys[i],
+                type:'line',
+                data: JSON.parse(p0[p0_keys[i]]),
+                smooth:true
+            });
+            p0_legendList.push(p0_keys[i]);
+        }
     }
 
+    // 遍历p0_y1
     for(var i = 0; i < p0_y1_keys.length; i ++) {
         // 若双Y轴，则添加入List
         p0_yAxisList.push({
@@ -154,6 +186,7 @@
             yAxisIndex: i + 1,
             data: JSON.parse(p0_y1[p0_y1_keys[i]]),
         });
+        p0_legendList.push(p0_y1_keys[i]);
     }
 
     myChart.setOption(option);
@@ -167,8 +200,15 @@
                 type: 'line'
             }
         },
+        legend: {
+            data:p1_legendList,
+            orient:'horizontal',
+            borderColor:'#000000',
+            borderWidth:1,
+            right: '10%',
+        },
         grid: {
-            top: '5%',
+            top: '13%',
             left: '10%',
             right: '10%',
             bottom: '35%'
@@ -212,14 +252,35 @@
 
     // 遍历p1
     for(var i = 0; i < p1_keys.length; i ++) {
-        p1_seriesList.push({
-            name:p1_keys[i],
-            type:'line',
-            data: JSON.parse(p1[p1_keys[i]]),
-            smooth:true
-        });
+        if(i == 0) {
+            p1_seriesList.push({
+                name:p1_keys[i],
+                type:'line',
+                itemStyle: {
+                    normal: {
+                        color: '#000000',
+                        lineStyle: {
+                            color: '#000000'
+                        }
+                    }
+                },
+                data: JSON.parse(p1[p1_keys[i]]),
+                smooth:true
+            });
+            p1_legendList.push(p1_keys[i]);
+        }
+        else {
+            p1_seriesList.push({
+                name:p1_keys[i],
+                type:'line',
+                data: JSON.parse(p1[p1_keys[i]]),
+                smooth:true
+            });
+            p1_legendList.push(p1_keys[i]);
+        }
     }
 
+    // 遍历p1_y1
     for(var i = 0; i < p1_y1_keys.length; i ++) {
         // 若双Y轴，则添加入List
         p1_yAxisList.push({
@@ -234,19 +295,19 @@
             yAxisIndex: i + 1,
             data: JSON.parse(p1_y1[p1_y1_keys[i]]),
         });
+        p1_legendList.push(p1_y1_keys[i]);
     }
     var myChart2 = echarts.init(ChartContainer2);
     myChart2.setOption(option2);
     // 动态更新series
     myChart2.setOption({series: p1_seriesList, yAxis: p1_yAxisList});
 
-
-
-    //三幅图关联
+    //两图关联
     myChart.group = 'group1';
     myChart2.group = 'group1';
     echarts.connect('group1');
 
+    // 监听窗口，调节Chart Size
     window.onresize = function () {
         resizeChartContainer();
         myChart.resize();
@@ -255,6 +316,5 @@
 
 
 </script>
-
 
 {% endblock %}

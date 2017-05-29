@@ -49,7 +49,6 @@ def show_csv_item(request):
     else:
         return HttpResponse("Please select a File!")
 
-
     try:
         dates =  df['dates']
         dates_json = dates.to_json(orient="values")
@@ -57,7 +56,6 @@ def show_csv_item(request):
         values_header = list(values)
     except:
         return HttpResponse("Wrong CSV Header!")
-
 
     # key_list && datas of panel, 供header分类使用
     p0_key = []

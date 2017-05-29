@@ -5,8 +5,6 @@
     <div id="main"></div>
 </div>
 
-
-
 <script>
 
     //数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
@@ -19,12 +17,12 @@
         ChartContainer1.style.height = window.innerHeight - 200  +'px';
     };
 
+    // 初始化容器大小
     resizeChartContainer();
 
     //获取Django传来的dates_json(日期),供X轴使用;
     var dates = JSON.parse('{{ dates_json|escapejs }}');
 
-    //获取Django传来的values_json(汇率数据);
     var ohcl = JSON.parse('{{ ohlc_json|escapejs }}');
 
     var p0 = JSON.parse('{{ p0_json|escapejs }}');
@@ -38,6 +36,8 @@
     var p0_y1 = JSON.parse('{{ p0_y1_json|escapejs }}');
 
     var p0_y1_keys = Object.keys(p0_y1);
+
+    var p0_legendList = [];
 
     //data_length为数据总长度,供计算停留的数据位置
     var date_length = dates.length;
@@ -55,7 +55,16 @@
                 type: 'line'
             }
         },
+        legend: {
+            data:p0_legendList,
+            orient:'horizontal',
+            borderColor:'#000000',
+            borderWidth:1,
+            top: '5%',
+            right: '10%',
+        },
         grid: {
+            top: '10%',
             left: '10%',
             right: '10%',
             bottom: '15%'
@@ -100,6 +109,7 @@
             type: 'candlestick',
             data: ohcl
         });
+        p0_legendList.push('OHLC');
     }
 
     // 默认左边Y轴
@@ -112,12 +122,33 @@
 
     // 遍历p0_others
     for(var i = 0; i < p0_keys.length; i ++) {
-        p0_seriesList.push({
-            name:p0_keys[i],
-            type:'line',
-            data: JSON.parse(p0[p0_keys[i]]),
-            smooth:true
-        });
+        // 第一个line为黑色
+        if(i == 0) {
+            p0_seriesList.push({
+                name:p0_keys[i],
+                type:'line',
+                itemStyle: {
+                    normal: {
+                        color: '#000000',
+                        lineStyle: {
+                            color: '#000000'
+                        }
+                    }
+                },
+                data: JSON.parse(p0[p0_keys[i]]),
+                smooth:true
+            });
+            p0_legendList.push(p0_keys[i]);
+        }
+        else{
+            p0_seriesList.push({
+                name:p0_keys[i],
+                type:'line',
+                data: JSON.parse(p0[p0_keys[i]]),
+                smooth:true
+            });
+            p0_legendList.push(p0_keys[i]);
+        }
     }
 
     for(var i = 0; i < p0_y1_keys.length; i ++) {
@@ -134,18 +165,19 @@
             yAxisIndex: i + 1,
             data: JSON.parse(p0_y1[p0_y1_keys[i]]),
         });
+        p0_legendList.push(p0_y1_keys[i]);
     }
 
     myChart.setOption(option);
     // 动态更新series
     myChart.setOption({series: p0_seriesList, yAxis: p0_yAxisList});
 
+    // 监听窗口，调节Chart Size
     window.onresize = function () {
         resizeChartContainer();
         myChart.resize();
     };
 
 </script>
-
 
 {% endblock %}
