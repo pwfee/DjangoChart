@@ -62,14 +62,14 @@ span.external span.fancytree-title:after {
 	border: none;
 }
 </style>
+
 <script type="text/javascript">
 $(function(){
-	// --- Initialize sample trees
+	// --- Initialize trees
 	$("#tree").fancytree({
         extensions: ["persist"],
 		autoActivate: false, // we use scheduleAction()
-		autoCollapse: true,
-        source: {url: "http://0.0.0.0:8000/json/"},
+		source: {url: "http://" + window.location.host + "/json/"},
         persist: {
             expandLazy: true,
             store: "auto" // 'cookie', 'local': use localStore, 'session': sessionStore
@@ -123,7 +123,6 @@ $(function(){
 			}
 		}
 	});
-
 });
 
 </script>

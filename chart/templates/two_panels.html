@@ -302,6 +302,55 @@
     // 动态更新series
     myChart2.setOption({series: p1_seriesList, yAxis: p1_yAxisList});
 
+    // 触发双击事件,双击任何数据点即恢复至(数据点-50,数据点+50)的范围
+    myChart.on('dblclick', function (params) {
+         myChart.setOption({
+            dataZoom: [
+                {
+                    type: 'inside',
+                    startValue: params.dataIndex - 50,
+                    endValue: params.dataIndex + 50,
+                    throttle: 1
+                }
+            ]
+        }),
+         myChart2.setOption({
+            dataZoom: [
+                {
+                    type: 'inside',
+                    startValue: params.dataIndex - 50,
+                    endValue: params.dataIndex + 50,
+                    throttle: 1
+                }
+            ]
+        })
+    });
+    
+    // 触发双击事件,双击任何数据点即恢复至(数据点-50,数据点+50)的范围
+    myChart2.on('dblclick', function (params) {
+         myChart.setOption({
+            dataZoom: [
+                {
+                    type: 'inside',
+                    startValue: params.dataIndex - 50,
+                    endValue: params.dataIndex + 50,
+                    throttle: 1
+                }
+            ]
+        }),
+         myChart2.setOption({
+            dataZoom: [
+                {
+                    type: 'inside',
+                    startValue: params.dataIndex - 50,
+                    endValue: params.dataIndex + 50,
+                    throttle: 1
+                }
+            ]
+        })
+    });
+
+
     //两图关联
     myChart.group = 'group1';
     myChart2.group = 'group1';

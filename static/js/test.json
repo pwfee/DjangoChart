@@ -1,0 +1,145 @@
+{
+  "folder": 1,
+  "children": [
+    {
+      "href": "1.html",
+      "type": "file",
+      "title": "1"
+    },
+    {
+      "href": "/Users/vinson/tmp/doc_tree/2",
+      "type": "file",
+      "title": "2"
+    },
+    {
+      "href": "/Users/vinson/tmp/doc_tree/3",
+      "type": "file",
+      "title": "3"
+    },
+    {
+      "href": "/Users/vinson/tmp/doc_tree/4",
+      "type": "file",
+      "title": "4"
+    },
+    {
+      "href": "/Users/vinson/tmp/doc_tree/5",
+      "type": "file",
+      "title": "5"
+    },
+    {
+      "folder": 1,
+      "children": [
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir1/11",
+          "type": "file",
+          "title": "11"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir1/12",
+          "type": "file",
+          "title": "12"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir1/13",
+          "type": "file",
+          "title": "13"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir1/14",
+          "type": "file",
+          "title": "14"
+        }
+      ],
+      "title": "dir1"
+    },
+    {
+      "folder": 1,
+      "children": [
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir2/21",
+          "type": "file",
+          "title": "21"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir2/22",
+          "type": "file",
+          "title": "22"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir2/23",
+          "type": "file",
+          "title": "23"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir2/24",
+          "type": "file",
+          "title": "24"
+        }
+      ],
+      "title": "dir2"
+    },
+    {
+      "folder": 1,
+      "children": [
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir3/31",
+          "type": "file",
+          "title": "31"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir3/32",
+          "type": "file",
+          "title": "32"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir3/33",
+          "type": "file",
+          "title": "33"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir3/34",
+          "type": "file",
+          "title": "34"
+        }
+      ],
+      "title": "dir3"
+    },
+    {
+      "folder": 1,
+      "children": [
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir4/41",
+          "type": "file",
+          "title": "41"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir4/42",
+          "type": "file",
+          "title": "42"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir4/43",
+          "type": "file",
+          "title": "43"
+        },
+        {
+          "href": "/Users/vinson/tmp/doc_tree/dir4/44",
+          "type": "file",
+          "title": "44"
+        }
+      ],
+      "title": "dir4"
+    },
+    {
+      "href": "/Users/vinson/tmp/doc_tree/tree.js",
+      "type": "file",
+      "title": "tree.js"
+    },
+    {
+      "href": "/Users/vinson/tmp/doc_tree/tree.json",
+      "type": "file",
+      "title": "tree.json"
+    }
+  ],
+  "title": "doc_tree"
+}

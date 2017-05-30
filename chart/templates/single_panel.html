@@ -40,7 +40,7 @@
     var p0_legendList = [];
 
     //data_length为数据总长度,供计算停留的数据位置
-    var date_length = dates.length;
+    var data_length = dates.length;
 
     option = {
         title: {
@@ -101,6 +101,20 @@
 
     // 初始化Chart
     var myChart = echarts.init(ChartContainer1);
+
+    // 触发双击事件,双击任何数据点即恢复至(数据点-50,数据点+50)的范围
+    myChart.on('dblclick', function (params) {
+         myChart.setOption({
+            dataZoom: [
+                {
+                    type: 'inside',
+                    startValue: params.dataIndex - 50,
+                    endValue: params.dataIndex + 50,
+                    throttle: 1
+                }
+            ]
+        })
+    });
 
     // 读入蜡烛图
     if(ohcl) {
