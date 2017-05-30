@@ -25,7 +25,7 @@ Bases on [Django][0] + [Pandas][1] and [Echarts][2] + [Fancytree][3], and provid
 
 
 #### CSV Format:
-#####1.Single Panel Chart :
+##### 1.Single Panel Chart :
 
 *Without y-axis*
 
@@ -45,7 +45,7 @@ Bases on [Django][0] + [Pandas][1] and [Echarts][2] + [Fancytree][3], and provid
 
 
 
-#####2.Two Panels Chart:
+##### 2.Two Panels Chart:
 
 *Have P0(the top panel), P1(the second panel), With y-axis in P0 *
 
@@ -63,7 +63,7 @@ Bases on [Django][0] + [Pandas][1] and [Echarts][2] + [Fancytree][3], and provid
 | 2015/3/23 | 97.02 | 97.99 | 3994.2 | 4164 | 5678 |
 | 2015/3/24 | 96.92 | 97.94 | 3963.6 | 4161  | 9123 |
 
-#####3.Three Panels Chart:
+##### 3.Three Panels Chart:
 
 *Have P0, P1 and P2*
 
