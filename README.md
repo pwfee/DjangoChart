@@ -2,8 +2,6 @@
 
 Bases on [Django][0] + [Pandas][1] and [Echarts][2] + [Fancytree][3], and provides customizable data visualization charts (Candlestick chart / Line chart).
 
----
-
 [0]: https://github.com/django/django
 [1]: https://github.com/pandas-dev/pandas
 [2]: https://github.com/ecomfe/echarts
