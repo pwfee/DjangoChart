@@ -11,4 +11,6 @@ urlpatterns = [
                        name='top'),
     url(r'^nav/', TemplateView.as_view(template_name="nav.html"),
                        name='nav'),
+    url(r'^welcome/', TemplateView.as_view(template_name="welcome.html"),
+        name='welcome'),
 ]

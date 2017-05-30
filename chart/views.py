@@ -6,6 +6,7 @@ from ChartDjango.settings import CSV_PATH
 from .utils.file_tree import *
 import os, re, json
 
+
 # 首页
 def file_json(request):
     return JsonResponse(read_dirs(CSV_PATH))
@@ -33,7 +34,7 @@ def show_csv_item(request):
         return HttpResponse("Please select a file!")
 
     try:
-        dates =  df['dates']
+        dates = df['dates']
         dates_json = dates.to_json(orient="values")
         values = df.drop('dates', axis=1)
         values_header = list(values)
@@ -122,14 +123,14 @@ def show_csv_item(request):
             p0_json[header] = values[header].to_json(orient="values")
 
         return render(request, 'three_panels.html', {'dates_json': dates_json, 'ohlc_json': ohlc_json,
-                                                   'p0_json': json.dumps(p0_json),
-                                                   'p0_y1_json': json.dumps(p0_y1_json),
-                                                   'p1_json': json.dumps(p1_json),
-                                                   'p1_y1_json': json.dumps(p1_y1_json),
-                                                   'p2_json': json.dumps(p2_json),
-                                                   'p2_y1_json': json.dumps(p2_y1_json),
-                                                   'file_name_no_postfix': file_name_no_postfix
-                                                    })
+                                                     'p0_json': json.dumps(p0_json),
+                                                     'p0_y1_json': json.dumps(p0_y1_json),
+                                                     'p1_json': json.dumps(p1_json),
+                                                     'p1_y1_json': json.dumps(p1_y1_json),
+                                                     'p2_json': json.dumps(p2_json),
+                                                     'p2_y1_json': json.dumps(p2_y1_json),
+                                                     'file_name_no_postfix': file_name_no_postfix
+                                                     })
 
 
     # 有p1, 2panels
@@ -164,11 +165,11 @@ def show_csv_item(request):
             p0_json[header] = values[header].to_json(orient="values")
 
         return render(request, 'two_panels.html', {'dates_json': dates_json, 'ohlc_json': ohlc_json,
-                                                     'p0_json': json.dumps(p0_json),
-                                                     'p0_y1_json': json.dumps(p0_y1_json),
-                                                     'p1_json': json.dumps(p1_json),
-                                                     'p1_y1_json': json.dumps(p1_y1_json),
-                                                     'file_name_no_postfix': file_name_no_postfix
+                                                   'p0_json': json.dumps(p0_json),
+                                                   'p0_y1_json': json.dumps(p0_y1_json),
+                                                   'p1_json': json.dumps(p1_json),
+                                                   'p1_y1_json': json.dumps(p1_y1_json),
+                                                   'file_name_no_postfix': file_name_no_postfix
                                                    })
 
     # 仅有p0,单panel图
@@ -202,4 +203,3 @@ def show_csv_item(request):
                                                      'p0_y1_json': json.dumps(p0_y1_json),
                                                      'file_name_no_postfix': file_name_no_postfix
                                                      })
-

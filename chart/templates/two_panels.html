@@ -68,7 +68,7 @@
             text: '{{ file_name_no_postfix }}',
             x:'center',
             y:'top',
-            textAlign:'center'
+            textAlign:'left'
         },
         tooltip: {
             trigger: 'axis',
@@ -325,7 +325,7 @@
             ]
         })
     });
-    
+
     // 触发双击事件,双击任何数据点即恢复至(数据点-50,数据点+50)的范围
     myChart2.on('dblclick', function (params) {
          myChart.setOption({
