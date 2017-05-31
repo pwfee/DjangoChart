@@ -88,17 +88,20 @@ def show_csv_item(request):
         # 若有p0_y1
         if p0_y1_key:
             for header in p0_y1_key:
-                p0_y1_json[header] = values[header].to_json(orient="values")
+                header_prefix = header.split('_')[0]
+                p0_y1_json[header_prefix] = values[header].to_json(orient="values")
 
         # 若有p1_y1
         if p1_y1_key:
             for header in p1_y1_key:
-                p1_y1_json[header] = values[header].to_json(orient="values")
+                header_prefix = header.split('_')[0]
+                p1_y1_json[header_prefix] = values[header].to_json(orient="values")
 
         # 若有p2_y1
         if p2_y1_key:
             for header in p2_y1_key:
-                p2_y1_json[header] = values[header].to_json(orient="values")
+                header_prefix = header.split('_')[0]
+                p2_y1_json[header_prefix] = values[header].to_json(orient="values")
 
         # 若为candle
         if 'openp' and 'closep' and 'highp' and 'lowp' in p0_key:
@@ -114,13 +117,16 @@ def show_csv_item(request):
             ohlc_json = json.dumps('')
 
         for header in p2_key:
-            p2_json[header] = values[header].to_json(orient="values")
+            header_prefix = header.split('_')[0]
+            p2_json[header_prefix] = values[header].to_json(orient="values")
 
         for header in p1_key:
-            p1_json[header] = values[header].to_json(orient="values")
+            header_prefix = header.split('_')[0]
+            p1_json[header_prefix] = values[header].to_json(orient="values")
 
         for header in p0_key:
-            p0_json[header] = values[header].to_json(orient="values")
+            header_prefix = header.split('_')[0]
+            p0_json[header_prefix] = values[header].to_json(orient="values")
 
         return render(request, 'three_panels.html', {'dates_json': dates_json, 'ohlc_json': ohlc_json,
                                                      'p0_json': json.dumps(p0_json),
@@ -138,12 +144,14 @@ def show_csv_item(request):
         # 若有p0_y1
         if p0_y1_key:
             for header in p0_y1_key:
-                p0_y1_json[header] = values[header].to_json(orient="values")
+                header_prefix = header.split('_')[0]
+                p0_y1_json[header_prefix] = values[header].to_json(orient="values")
 
         # 若有p1_y1
         if p1_y1_key:
             for header in p1_y1_key:
-                p1_y1_json[header] = values[header].to_json(orient="values")
+                header_prefix = header.split('_')[0]
+                p1_y1_json[header_prefix] = values[header].to_json(orient="values")
 
         # 若为candle
         if 'openp' and 'closep' and 'highp' and 'lowp' in p0_key:
@@ -159,10 +167,12 @@ def show_csv_item(request):
             ohlc_json = json.dumps('')
 
         for header in p1_key:
-            p1_json[header] = values[header].to_json(orient="values")
+            header_prefix = header.split('_')[0]
+            p1_json[header_prefix] = values[header].to_json(orient="values")
 
         for header in p0_key:
-            p0_json[header] = values[header].to_json(orient="values")
+            header_prefix = header.split('_')[0]
+            p0_json[header_prefix] = values[header].to_json(orient="values")
 
         return render(request, 'two_panels.html', {'dates_json': dates_json, 'ohlc_json': ohlc_json,
                                                    'p0_json': json.dumps(p0_json),
@@ -178,7 +188,8 @@ def show_csv_item(request):
         # 若有p0_y1
         if p0_y1_key:
             for header in p0_y1_key:
-                p0_y1_json[header] = values[header].to_json(orient="values")
+                header_prefix = header.split('_')[0]
+                p0_y1_json[header_prefix] = values[header].to_json(orient="values")
 
         # 若为candle
         if 'openp' and 'closep' and 'highp' and 'lowp' in p0_key:
@@ -196,7 +207,8 @@ def show_csv_item(request):
 
         # 除OHLC的p0_key
         for header in p0_key:
-            p0_json[header] = values[header].to_json(orient="values")
+            header_prefix = header.split('_')[0]
+            p0_json[header_prefix] = values[header].to_json(orient="values")
 
         return render(request, 'single_panel.html', {'dates_json': dates_json, 'ohlc_json': ohlc_json,
                                                      'p0_json': json.dumps(p0_json),
