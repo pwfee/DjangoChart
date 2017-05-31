@@ -47,7 +47,7 @@ Bases on [Django][0] + [Pandas][1] and [Echarts][2] + [Fancytree][3], and provid
 
 ##### 2.Two Panels Chart:
 
-*Have P0(the top panel), P1(the second panel), With y-axis in P0 *
+*Have P0(the top panel), P1(the second panel), With y-axis in P0*
 
 | dates | cft01_y0 | cftf01 | cfif01_y1_p0 | DLAY01_p1 |
 | --- | --- | --- | --- | --- |
